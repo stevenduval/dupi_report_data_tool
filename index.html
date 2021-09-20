@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>File Delimiter Tool</title>
+        <link href="css/stylesheet.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+        <script src="js/jquery.js"> </script>
+        <script lang="javascript" src="js/xlsx.full.min.js"></script>
+    </head> 
+    <body>
+        <div id ="container">
+            <div class="left" style="text-align: left;">
+                    <button class="format">FORMAT DATA</button>
+            </div>
+            <div class="right"> 
+            </div>
+            <div id="input" class="input-sidebyside">
+                <span class="heading">INPUT:</span>
+                <textarea></textarea>
+                <span style="display:block"></span>
+            </div>
+            <div id="output" class="output-sidebyside">
+                <span class="heading">OUTPUT:</span>
+                <textarea>npi_number|last_contact_date|brand|vendor</textarea>
+            </div>
+        </div>
+        <script>
+                //set reusable variables
+                const formatBtn =  document.querySelector('.format');
+                const tdSLPH = document.querySelector('#output textarea');
+                let json;
+                // removes anchors from the input and puts it in the output
+                formatBtn.addEventListener('click', () => {
+                    let input =  document.querySelector('#input textarea').value;
+                    let workbook = XLSX.read(input, { type: 'binary'});
+                    workbook.SheetNames.forEach(sheetName => {
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        json = JSON.parse(json_object); 
+                        console.log(json);
+                    });
+                    json.forEach(object => {
+                        const slphInsert = `\r\n${object.NPI}|${object.Keycode2}|${object.Keycode3}|DMD`;
+                        tdSLPH.insertAdjacentText('beforeend', slphInsert);
+                    })
+                });
+            </script> 
+    </body>
+</html>
+   
+    
