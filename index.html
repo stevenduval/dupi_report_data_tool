@@ -9,7 +9,8 @@
     <body>
         <div id ="container">
             <div class="left" style="text-align: left;">
-                    <button class="format">FORMAT DATA</button>
+                <button class="format">FORMAT DATA</button>
+                <button class="reload">RELOAD</button>
             </div>
             <div class="right"> 
             </div>
@@ -25,6 +26,7 @@
         </div>
         <script>
                 //set reusable variables
+                const reloadBtn =  document.querySelector('.reload');
                 const formatBtn =  document.querySelector('.format');
                 const tdSLPH = document.querySelector('#output textarea');
                 let json;
@@ -43,8 +45,7 @@
                         tdSLPH.insertAdjacentText('beforeend', slphInsert);
                     })
                 });
+                reloadBtn.addEventListener('click', () => location.reload(true));
             </script> 
     </body>
 </html>
-   
-    
