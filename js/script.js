@@ -38,7 +38,7 @@ const formatData = (data) => {
 const saveOutput = () => { 
     const blob = new Blob([dataToInsert], { type: "text/plain"});
     const anchor = document.createElement("a");
-    const date = new Date().toLocaleString('en-gb').split(",")[0].split("/").reverse().join("_");
+    const date = new Date().toLocaleString('en-gb').split(",")[0].split("/").reverse().join("");
     anchor.download = `USA_DMD_Suppression_list_${date}.txt`;
     anchor.href = window.URL.createObjectURL(blob);
     anchor.target ="_blank";
