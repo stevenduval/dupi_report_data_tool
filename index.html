@@ -28,6 +28,7 @@
                 //set reusable variables
                 const reloadBtn =  document.querySelector('.reload');
                 const formatBtn =  document.querySelector('.format');
+                let slphInsert = '';
                 const tdSLPH = document.querySelector('#output textarea');
                 let json;
                 // removes anchors from the input and puts it in the output
@@ -41,9 +42,9 @@
                         console.log(json);
                     });
                     json.forEach(object => {
-                        const slphInsert = `\r\n${object.NPI}|${object.Keycode2}|${object.Keycode3}|DMD`;
-                        tdSLPH.insertAdjacentText('beforeend', slphInsert);
+                        slphInsert += `\r\n${object.NPI}|${object.Keycode2}|${object.Keycode3}|DMD`;
                     })
+                     tdSLPH.insertAdjacentText('beforeend', slphInsert);
                 });
                 reloadBtn.addEventListener('click', () => location.reload(true));
             </script> 
