@@ -14,8 +14,8 @@ fileSelector.addEventListener('change', (event) => {
             
 //read file as text which then fires load event to send data to formatting 
 const readFile = (file) => { 
-    reader.readAsText(file);
     reader.addEventListener('load', (event) => formatData(event.target.result));
+    reader.readAsText(file);
 }
             
 // format data to proper format to then send to save
@@ -32,7 +32,7 @@ const formatData = (data) => {
     })
     // call to save file
     saveOutput();
-    }
+}
             
 // save file to computer
 const saveOutput = () => { 
