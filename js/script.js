@@ -3,9 +3,7 @@ const reloadBtn =  document.querySelector('.reload');
 const formatBtn =  document.querySelector('.format');
 const fileSelector = document.getElementById('file-selector');
 const reader = new FileReader();
-let dataToInsert = 'npi_number|last_contact_date|brand|vendor';
-let json;
-            
+
 // detect when file is inserted
 fileSelector.addEventListener('change', (event) => {
     const fileList = event.target.files[0];
@@ -14,29 +12,37 @@ fileSelector.addEventListener('change', (event) => {
             
 //read file as text which then fires load event to send data to formatting 
 const readFile = (file) => { 
-    reader.addEventListener('load', (event) => formatData(event.target.result));
+    reader.addEventListener('load', (event) => fileExport(event.target.result));
     reader.readAsText(file);
 }
-            
-// format data to proper format to then send to save
-const formatData = (data) => {
-    let workbook = XLSX.read(data, { type: 'binary'});
-    workbook.SheetNames.forEach(sheetName => {
-        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-        let json_object = JSON.stringify(XL_row_object);
-        json = JSON.parse(json_object); 
-    });
+
+// run file export process when load event triggers
+const fileExport = (data) => {
+    const workBook = readWorkBook(data);
+    const workBookData = formatWorkBookData(workBook);
+    const finalData = formatOutput(workBookData[0]);
+    saveOutput(finalData);
+}
+
+// read the inbound data
+const readWorkBook = (workBook) => XLSX.read(workBook, { type: 'binary'});
+
+// format data to json object
+const formatWorkBookData = (workBook) => workBook.SheetNames.map(sheetName => XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]));
+
+// format data for export
+const formatOutput = (data) => {
+    const header = 'npi_number|last_contact_date|brand|vendor';
     // loop through data to grab needed data
-    json.forEach(object => {
-        dataToInsert += `\r\n${object.NPI}|${object.Keycode2}|${object.Keycode3}|DMD`;
-    })
-    // call to save file
-    saveOutput();
+    return[
+        header,
+        ...data.map(object => `${object.NPI}|${object.Keycode2}|${object.Keycode3}|DMD`)]
+        .join(`\r\n`);
 }
             
 // save file to computer
-const saveOutput = () => { 
-    const blob = new Blob([dataToInsert], { type: "text/plain"});
+const saveOutput = (data) => { 
+    const blob = new Blob([data], { type: "text/plain"});
     const anchor = document.createElement("a");
     const date = new Date().toLocaleString('en-gb').split(",")[0].split("/").reverse().join("");
     anchor.download = `USA_DMD_Suppression_list_${date}.txt`;
