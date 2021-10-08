@@ -46,7 +46,7 @@ const saveOutput = (data) => {
     const anchor = document.createElement("a");
     const getDateTime = new Date().toLocaleString('en-gb').split(", ");
     const date = getDateTime[0].split("/").reverse().join("");
-    const time = getDateTime[1].split(":",2).join("");
+    const time = getDateTime[1].split(":").join("");
     anchor.download = `USA_DMD_Suppression_list_${date}${time}.txt`;
     anchor.href = window.URL.createObjectURL(blob);
     anchor.target ="_blank";
