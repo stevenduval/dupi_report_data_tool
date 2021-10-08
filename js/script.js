@@ -44,8 +44,10 @@ const formatOutput = (data) => {
 const saveOutput = (data) => { 
     const blob = new Blob([data], { type: "text/plain"});
     const anchor = document.createElement("a");
-    const date = new Date().toLocaleString('en-gb').split(",")[0].split("/").reverse().join("");
-    anchor.download = `USA_DMD_Suppression_list_${date}.txt`;
+    const getDateTime = new Date().toLocaleString('en-gb').split(",");
+    const date = getDateTime[0].split("/").reverse().join("");
+    const time = getDateTime[1].split(":",2).join("");
+    anchor.download = `USA_DMD_Suppression_list_${date}${time}.txt`;
     anchor.href = window.URL.createObjectURL(blob);
     anchor.target ="_blank";
     anchor.style.display = "none"; // just to be safe!
