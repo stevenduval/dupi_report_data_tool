@@ -44,7 +44,7 @@ const formatOutput = (data) => {
 const saveOutput = (data) => { 
     const blob = new Blob([data], { type: "text/plain"});
     const anchor = document.createElement("a");
-    const getDateTime = new Date().toLocaleString('en-gb').split(",");
+    const getDateTime = new Date().toLocaleString('en-gb').split(", ");
     const date = getDateTime[0].split("/").reverse().join("");
     const time = getDateTime[1].split(":",2).join("");
     anchor.download = `USA_DMD_Suppression_list_${date}${time}.txt`;
